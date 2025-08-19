@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CrewTube - Accueil</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Page de départ */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .door-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .door {
+      width: 120px;
+      height: 200px;
+      background: linear-gradient(145deg, #222, #333);
+      border: 4px solid #555;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      box-shadow: 0 0 20px rgba(0,0,0,0.7);
+    }
+
+    .door::after {
+      content: '';
+      width: 12px;
+      height: 12px;
+      background: #999;
+      border-radius: 50%;
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    /* Effet glitch */
+    .glitch {
+      animation: glitchAnim 1s forwards;
+    }
+
+    @keyframes glitchAnim {
+      0% { filter: hue-rotate(0deg) brightness(1); }
+      20% { filter: hue-rotate(30deg) brightness(1.3); }
+      40% { filter: hue-rotate(-30deg) brightness(0.8); }
+      60% { filter: contrast(2) saturate(2); }
+      80% { filter: hue-rotate(360deg); }
+      100% { opacity: 0; }
+    }
+
+    /* Page réelle cachée au début */
+    .homepage {
+      display: none;
+      height: 100%;
+      background: linear-gradient(to bottom right, #1a1a1a, #121212);
+      color: white;
+    }
+
+    .homepage.show {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(1.05); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Porte -->
+  <div class="door-container" id="door-screen">
+    <div class="door" id="door"></div>
+  </div>
+
+  <!-- Page d'accueil réelle -->
+  <div class="homepage" id="homepage">
+    <h1 class="text-5xl font-bold mb-6">Bienvenue sur <span class="text-indigo-500">CrewTube</span></h1>
+    <p class="mb-8 text-lg text-gray-300">Connecte-toi pour accéder à tes outils.</p>
+    <a href="/login" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition">
+      Se connecter avec Discord
+    </a>
+  </div>
+
+  <script>
+    const door = document.getElementById('door');
+    const doorScreen = document.getElementById('door-screen');
+    const homepage = document.getElementById('homepage');
+
+    door.addEventListener('click', () => {
+      // Ajoute effet glitch
+      door.classList.add('glitch');
+
+      // Après animation -> affiche la homepage
+      setTimeout(() => {
+        doorScreen.style.display = 'none';
+        homepage.classList.add('show');
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
