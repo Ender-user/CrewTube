@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CrewTube</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+
+    <nav class="bg-gray-800 shadow-md">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold">CrewTube</h1>
+            <a href="{{ url_for('logout') }}" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition">Déconnexion</a>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto p-6 space-y-6">
+        <h2 class="text-2xl font-bold">Bonjour, {{ user.username }} 👋</h2>
+        <p class="text-gray-400">Sélectionnez un outil pour commencer.</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Carte outil 1 : Créateur de faux commentaires -->
+            <a href="{{ url_for('comment_creator') }}" class="bg-gray-800 hover:bg-gray-700 p-6 rounded-xl shadow-lg transition transform hover:scale-105">
+                <div class="flex items-center space-x-4">
+                    <div class="bg-blue-600 p-3 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16h6m2 4H7a2 2 0 01-2-2V6a2 2 0 012-2h3l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2z" /></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg">Créateur de faux commentaires</h3>
+                        <p class="text-gray-400 text-sm mt-1">Génère des commentaires YouTube réalistes avec nom, pseudo, photo de profil et likes.</p>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Exemple Carte outil 2 -->
+            <a href="https://discord.gg/Rz2rUQUne8" class="bg-gray-800 hover:bg-gray-700 p-6 rounded-xl shadow-lg transition transform hover:scale-105">
+                <div class="flex items-center space-x-4">
+                    <div class="bg-blue-600 p-3 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16h6m2 4H7a2 2 0 01-2-2V6a2 2 0 012-2h3l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2z" /></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg">Discord</h3>
+                        <p class="text-gray-400 text-sm mt-1">Serveur Discord officiel de CrewTube</p>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Exemple Carte outil 3 -->
+            <a href="{{ url_for('bot_editor') }}" class="bg-gray-800 hover:bg-gray-700 p-6 rounded-xl shadow-lg transition transform hover:scale-105">
+                <div class="flex items-center space-x-4">
+                    <div class="bg-blue-600 p-3 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16h6m2 4H7a2 2 0 01-2-2V6a2 2 0 012-2h3l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2z" /></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg">Bot Discord</h3>
+                        <p class="text-gray-400 text-sm mt-1">Créer votre bot Discord facilement</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
