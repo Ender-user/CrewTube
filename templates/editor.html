@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Éditeur - Askly</title>
+  <script src="https://unpkg.com/blockly@9.3.3/blockly.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #232332;
+      color: #3a54bc;
+      font-family: sans-serif;
+    }
+
+    #header {
+      background: #111;
+      padding: 1em;
+      text-align: center;
+    }
+
+    #blocklyArea {
+      height: calc(100vh - 160px);
+    }
+
+    #blocklyDiv {
+      height: 100%;
+      width: 100%;
+    }
+
+    #export, #copy {
+      border: none;
+      padding: 1em 2em;
+      font-weight: bold;
+      font-size: 1em;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 1em auto;
+      display: block;
+      width: fit-content;
+    }
+
+    #export {
+      background: #f39c12;
+      color: black;
+    }
+
+    #copy {
+      background: #3498db;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <h1>Askly - Éditeur de bot</h1>
+    <p>Bot : <strong id="bot_name">Bot</strong></p>
+  </div>
+
+  <div id="blocklyArea">
+    <div id="blocklyDiv"></div>
+  </div>
+
+  <button id="export">Exporter le code bot en .py</button>
+  <button id="copy">Copier le code</button>
+
+  <script>
+    Blockly.defineBlocksWithJsonArray([
+      {
+        "type": "start_bot",
+        "message0": "Démarrage du bot",
+        "nextStatement": null,
+        "colour": 230
+      },
+      {
+        "type": "send_message",
+        "message0": "Envoyer le message %1",
+        "args0": [
+          { "type": "field_input", "name": "TEXT", "text": "Hello world" }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 160
+      },
+      {
+        "type": "on_command",
+        "message0": "Quand la commande %1 est utilisée",
+        "args0": [
+          { "type": "field_input", "name": "CMD", "text": "!ping" }
+        ],
+        "message1": "faire %1",
+        "args1": [
+          { "type": "input_statement", "name": "DO" }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 20
+      },
+      {
+        "type": "reply_message",
+        "message0": "Répondre avec %1",
+        "args0": [
+          { "type": "field_input", "name": "REPLY", "text": "Salut !" }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 100
+      },
+      {
+        "type": "send_image",
+        "message0": "Envoyer une image avec l'URL %1",
+        "args0": [
+          { "type": "field_input", "name": "URL", "text": "https://..." }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 195
+      },
+      {
+        "type": "send_embed",
+        "message0": "Embed titre %1 description %2 couleur %3",
+        "args0": [
+          { "type": "field_input", "name": "TITLE", "text": "Titre" },
+          { "type": "field_input", "name": "DESC", "text": "Description" },
+          { "type": "field_input", "name": "COLOR", "text": "#3498db" }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 280
+      },
+      {
+        "type": "reaction_role",
+        "message0": "Quand quelqu'un réagit avec %1 donner le rôle %2",
+        "args0": [
+          { "type": "field_input", "name": "EMOJI", "text": "👍" },
+          { "type": "field_input", "name": "ROLE", "text": "NomDuRôle" }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 60
+      },
+      {
+        "type": "create_ticket",
+        "message0": "Créer un ticket dans la catégorie %1",
+        "args0": [
+          { "type": "field_input", "name": "CATEGORY", "text": "tickets" }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 10
+      }
+    ]);
+
+    const toolbox = {
+      "kind": "categoryToolbox",
+      "contents": [
+        {
+          "kind": "category",
+          "name": "Structure",
+          "colour": "#d35400",
+          "contents": [{ "kind": "block", "type": "start_bot" }]
+        },
+        {
+          "kind": "category",
+          "name": "Messages",
+          "colour": "#5C81A6",
+          "contents": [
+            { "kind": "block", "type": "send_message" },
+            { "kind": "block", "type": "reply_message" },
+            { "kind": "block", "type": "send_image" }
+          ]
+        },
+        {
+          "kind": "category",
+          "name": "Commandes",
+          "colour": "#A65C81",
+          "contents": [
+            { "kind": "block", "type": "on_command" },
+            { "kind": "block", "type": "create_ticket" }
+          ]
+        },
+        {
+          "kind": "category",
+          "name": "Embed",
+          "colour": "#9b59b6",
+          "contents": [{ "kind": "block", "type": "send_embed" }]
+        },
+        {
+          "kind": "category",
+          "name": "Réactions",
+          "colour": "#27ae60",
+          "contents": [{ "kind": "block", "type": "reaction_role" }]
+        }
+      ]
+    };
+
+    const workspace = Blockly.inject('blocklyDiv', {
+      toolbox: toolbox,
+      theme: Blockly.Themes.Dark,
+      trashcan: true,
+      scrollbars: true
+    });
+
+    const xmlText = `<xml xmlns="https://developers.google.com/blockly/xml">
+      <block type="start_bot" x="20" y="20" deletable="false" movable="false"></block>
+    </xml>`;
+    const xml = Blockly.utils.xml.textToDom(xmlText);
+    Blockly.Xml.domToWorkspace(xml, workspace);
+
+    document.getElementById("export").onclick = function () {
+      const code = generatePythonCode();
+      const filename = "mon_bot.py";
+      const blob = new Blob([code], { type: "text/plain;charset=utf-8" });
+      const link = document.createElement("a");
+      link.download = filename;
+      link.href = window.URL.createObjectURL(blob);
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+    };
+
+    document.getElementById("copy").onclick = function () {
+      const code = generatePythonCode();
+      navigator.clipboard.writeText(code)
+        .then(() => alert("Code copié dans le presse-papier !"))
+        .catch(() => alert("Erreur lors de la copie."));
+    };
+
+    function generatePythonCode() {
+      const blocks = workspace.getTopBlocks(true);
+      let code = `import discord\nfrom discord.ext import commands\n\nintents = discord.Intents.all()\nbot = commands.Bot(command_prefix="!", intents=intents)\n\n`;
+
+      blocks.forEach(block => {
+        if (block.type === "start_bot") {
+          const next = block.getNextBlock();
+          if (next) code += parseBlock(next);
+        }
+      });
+
+      code += `\nbot.run("VOTRE_TOKEN_ICI")\n`;
+      return code;
+    }
+
+    function parseBlock(block) {
+      if (!block) return "";
+
+      if (block.type === "send_message") {
+        const text = block.getFieldValue("TEXT");
+        return `@bot.event\nasync def on_ready():\n    print("${text}")\n` + parseBlock(block.getNextBlock());
+      }
+
+      if (block.type === "on_command") {
+        const cmd = block.getFieldValue("CMD").replace("!", "");
+        const inner = block.getInputTargetBlock("DO");
+        const body = parseBlock(inner).replace(/^/gm, "    ");
+        return `@bot.command()\nasync def ${cmd}(ctx):\n${body || "    pass"}\n` + parseBlock(block.getNextBlock());
+      }
+
+      if (block.type === "reply_message") {
+        const reply = block.getFieldValue("REPLY");
+        return `await ctx.send("${reply}")\n` + parseBlock(block.getNextBlock());
+      }
+
+      if (block.type === "send_image") {
+        const url = block.getFieldValue("URL");
+        return `await ctx.send("${url}")\n` + parseBlock(block.getNextBlock());
+      }
+
+      if (block.type === "send_embed") {
+        const title = block.getFieldValue("TITLE");
+        const desc = block.getFieldValue("DESC");
+        const color = block.getFieldValue("COLOR").replace("#", "0x");
+        return `embed = discord.Embed(title="${title}", description="${desc}", color=${color})\nawait ctx.send(embed=embed)\n` + parseBlock(block.getNextBlock());
+      }
+
+      if (block.type === "reaction_role") {
+        const emoji = block.getFieldValue("EMOJI");
+        const role = block.getFieldValue("ROLE");
+        return `@bot.event\nasync def on_raw_reaction_add(payload):\n    guild = bot.get_guild(payload.guild_id)\n    member = guild.get_member(payload.user_id)\n    if payload.emoji.name == "${emoji}":\n        role = discord.utils.get(guild.roles, name="${role}")\n        await member.add_roles(role)\n` + parseBlock(block.getNextBlock());
+      }
+
+      if (block.type === "create_ticket") {
+        const category = block.getFieldValue("CATEGORY");
+        return `guild = ctx.guild\ncategory = discord.utils.get(guild.categories, name="${category}")\noverwrites = {\n    guild.default_role: discord.PermissionOverwrite(read_messages=False),\n    ctx.author: discord.PermissionOverwrite(read_messages=True)\n}\nchannel = await guild.create_text_channel(name=f"ticket-{ctx.author.name}", overwrites=overwrites, category=category)\nawait channel.send(f"Bienvenue {ctx.author.mention}, un modérateur va vous répondre.")\n` + parseBlock(block.getNextBlock());
+      }
+
+      return "";
+    }
+  </script>
+</body>
+</html>
