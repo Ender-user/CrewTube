@@ -1,0 +1,55 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    text-align: center;
+    padding: 50px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #7289da;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+input, textarea {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+}
+
+.comment-preview {
+    display: flex;
+    align-items: flex-start;
+    background: white;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 5px;
+    text-align: left;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.comment-preview .profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.comment-body p {
+    margin: 5px 0;
+}
+
+.comment-body span {
+    color: #555;
+    font-size: 14px;
+}
