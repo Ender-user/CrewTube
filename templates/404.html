@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Page non trouvée</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: radial-gradient(circle at top, #1a1a1a, #0d0d0d);
+      color: white;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .glitch {
+      font-size: 6rem;
+      font-weight: bold;
+      position: relative;
+      animation: glitchAnim 2s infinite;
+    }
+
+    @keyframes glitchAnim {
+      0% { text-shadow: 2px 2px red, -2px -2px cyan; }
+      25% { text-shadow: -2px 2px red, 2px -2px cyan; }
+      50% { text-shadow: 2px -2px red, -2px 2px cyan; }
+      75% { text-shadow: -2px -2px red, 2px 2px cyan; }
+      100% { text-shadow: 2px 2px red, -2px -2px cyan; }
+    }
+  </style>
+</head>
+<body>
+  <div class="text-center">
+    <h1 class="glitch">404</h1>
+    <p class="mt-4 text-xl text-gray-400">Oups ! Cette page n’existe pas...</p>
+    <a href="/" class="mt-8 inline-block px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg transition">
+      Retour à l'accueil
+    </a>
+  </div>
+</body>
+</html>
