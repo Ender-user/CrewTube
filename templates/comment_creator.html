@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrewTube</title>
+    <!-- Tailwind CSS pour le design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Bibliothèque pour l'export en image -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Police Inter pour ressembler à YouTube -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Style pour le bouton de téléversement de fichier */
+        input[type="file"]::-webkit-file-upload-button {
+            visibility: hidden;
+        }
+        input[type="file"]::before {
+            content: 'Choisir une image';
+            display: inline-block;
+            background: #3f3f46; /* zinc-700 */
+            border: 1px solid #52525b; /* zinc-600 */
+            border-radius: 0.375rem;
+            padding: 0.5rem 1rem;
+            outline: none;
+            white-space: nowrap;
+            -webkit-user-select: none;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+        input[type="file"]:hover::before {
+            background: #52525b; /* zinc-600 */
+        }
+
+        /* Styles YouTube authentiques */
+        .youtube-comment {
+            background: #0f0f0f;
+            color: #f1f1f1;
+        }
+        
+        .youtube-username {
+            color: #f1f1f1;
+            font-weight: 500;
+            font-size: 13px;
+            line-height: 18px;
+        }
+        
+        .youtube-handle {
+            color: #aaaaaa;
+            font-size: 12px;
+            font-weight: 400;
+        }
+        
+        .youtube-timestamp {
+            color: #aaaaaa;
+            font-size: 12px;
+            font-weight: 400;
+        }
+        
+        .youtube-comment-text {
+            color: #f1f1f1;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: 400;
+            margin-top: 2px;
+        }
+        
+        .youtube-actions {
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .youtube-like-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            margin-left: -8px;
+            border-radius: 18px;
+            cursor: pointer;
+            transition: background-color 0.1s;
+        }
+        
+        .youtube-like-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .youtube-like-count {
+            color: #aaaaaa;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .youtube-dislike-btn {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-radius: 18px;
+            cursor: pointer;
+            transition: background-color 0.1s;
+        }
+        
+        .youtube-dislike-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .youtube-reply-btn {
+            color: #aaaaaa;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 8px;
+            border-radius: 18px;
+            cursor: pointer;
+            transition: background-color 0.1s;
+        }
+        
+        .youtube-reply-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .youtube-icon {
+            width: 16px;
+            height: 16px;
+            fill: #aaaaaa;
+        }
+        
+        .youtube-pfp {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-4 sm:p-6 lg:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-2xl md:text-3xl font-bold text-center mb-8">Générateur de Faux Commentaire YouTube</h1>
+        
+        <!-- Conteneur principal avec layout flexible -->
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Colonne de gauche : Panneau de contrôle -->
+            <div class="w-full lg:w-1/3 flex-shrink-0">
+                <div class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-5">
+                    <div>
+                        <label for="nameInput" class="block text-sm font-medium text-gray-300 mb-1">Nom d'utilisateur</label>
+                        <input type="text" id="nameInput" value="Utilisateur Anonyme" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
+                    </div>
+                    <div>
+                        <label for="handleInput" class="block text-sm font-medium text-gray-300 mb-1">Alias (@)</label>
+                        <input type="text" id="handleInput" value="@utilisateur123" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
+                    </div>
+                    <div>
+                        <label for="likesInput" class="block text-sm font-medium text-gray-300 mb-1">Nombre de "J'aime"</label>
+                        <input type="number" id="likesInput" value="1337" min="0" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1">Photo de profil</label>
+                        <div class="flex flex-col space-y-2">
+                            <input type="file" id="pfpFileInput" accept="image/*" class="text-sm text-gray-400">
+                            <input type="text" id="pfpUrlInput" placeholder="Ou coller l'URL d'une image" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="commentInput" class="block text-sm font-medium text-gray-300 mb-1">Votre commentaire</label>
+                        <textarea id="commentInput" rows="4" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition">Ceci est un exemple de commentaire. Vous pouvez le modifier !</textarea>
+                    </div>
+                </div>
+
+                <!-- Boutons d'action sous le panneau -->
+                <div class="mt-6 space-y-3">
+                    <button id="exportButton" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-5 rounded-lg shadow-lg flex items-center justify-center space-x-2 transition-transform transform hover:scale-105">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <span>Exporter en image</span>
+                    </button>
+                    <a href="#" id="dashboardButton" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-5 rounded-lg shadow-lg flex items-center justify-center space-x-2 transition-transform transform hover:scale-105">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                        <span>Retour au dashboard</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Colonne de droite : Aperçu -->
+            <div class="w-full lg:w-2/3">
+                 <h2 class="text-xl font-bold text-center mb-4 lg:text-left">Aperçu</h2>
+                 <!-- La zone à exporter en image -->
+                 <div id="comment-preview-area" class="youtube-comment p-4 rounded-lg">
+                    <div class="flex items-start space-x-3">
+                        <img id="pfpOutput" src="https://get-picto.com/wp-content/uploads/2024/07/png-logo-youtube.webp" alt="Photo de profil" class="w-10 h-10 rounded-full object-cover bg-gray-600">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2 mb-1 flex-wrap">
+                                <span id="nameOutput" class="youtube-username">YouTube</span>
+                                <span id="handleOutput" class="youtube-handle">@je_suis_pauvre_give_me_a_money_please</span>
+                                <span class="youtube-timestamp">il y a 10 minutes</span>
+                            </div>
+                            <p id="commentOutput" class="youtube-comment-text whitespace-pre-wrap break-words">Ceci est un exemple de commentaire. Vous pouvez le modifier !</p>
+                            <div class="youtube-actions">
+                                <div class="youtube-like-btn">
+                                    <svg class="youtube-icon" viewBox="0 0 24 24">
+                                        <path d="M18.77,11h-4.23l1.52-4.94C16.38,5.03,15.54,4,14.38,4c-0.58,0-1.14,0.24-1.52,0.65L7,11H3v10h4h1h9.43 c1.06,0,1.98-0.67,2.19-1.61l1.34-6C21.23,12.15,20.18,11,18.77,11z M7,20H4v-8h3V20z M19.98,13.17l-1.34,6 C18.54,19.65,18.03,20,17.43,20H8v-8.61l5.6-6.06C13.79,5.12,14.08,5,14.38,5c0.26,0,0.5,0.11,0.63,0.3 c0.07,0.1,0.15,0.26,0.09,0.47l-1.52,4.94L13.18,12h1.35h4.23c0.41,0,0.8,0.17,1.03,0.46C19.92,12.61,20.05,12.86,19.98,13.17z"/>
+                                    </svg>
+                                    <span id="likesOutput" class="youtube-like-count">1,3 K</span>
+                                </div>
+                                <div class="youtube-dislike-btn">
+                                    <svg class="youtube-icon" viewBox="0 0 24 24">
+                                        <path d="M17,4h-1H6.57C5.5,4,4.59,4.67,4.38,5.61l-1.34,6C2.77,12.85,3.82,14,5.23,14h4.23l-1.52,4.94C7.62,19.97,8.46,21,9.62,21 c0.58,0,1.14-0.24,1.52-0.65L17,14h4V4H17z M10.4,19.67C10.21,19.88,9.92,20,9.62,20c-0.26,0-0.5-0.11-0.63-0.3 c-0.07-0.1-0.15-0.26-0.09-0.47l1.52-4.94l0.4-1.29H9.46H5.23c-0.41,0-0.8-0.17-1.03-0.46c-0.12-0.15-0.25-0.4-0.18-0.72l1.34-6 C5.46,5.35,5.97,5,6.57,5H16v8.61L10.4,19.67z M20,13h-3V5h3V13z"/>
+                                    </svg>
+                                </div>
+                                <div class="youtube-reply-btn">
+                                    Répondre
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Récupération des éléments du DOM
+        const nameInput = document.getElementById('nameInput');
+        const handleInput = document.getElementById('handleInput');
+        const likesInput = document.getElementById('likesInput');
+        const commentInput = document.getElementById('commentInput');
+        const pfpFileInput = document.getElementById('pfpFileInput');
+        const pfpUrlInput = document.getElementById('pfpUrlInput');
+        const exportButton = document.getElementById('exportButton');
+        const previewArea = document.getElementById('comment-preview-area');
+
+        const nameOutput = document.getElementById('nameOutput');
+        const handleOutput = document.getElementById('handleOutput');
+        const likesOutput = document.getElementById('likesOutput');
+        const commentOutput = document.getElementById('commentOutput');
+        const pfpOutput = document.getElementById('pfpOutput');
+
+        // Remplacez '#' par le lien réel de votre dashboard
+        document.getElementById('dashboardButton').href = "/dashboard"; 
+
+        // Fonction pour formater les nombres (ex: 1337 -> 1,3 K)
+        function formatLikes(num) {
+            if (isNaN(num)) return '0';
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1).replace(/\.0$/, '') + ' M';
+            }
+            if (num >= 1000) {
+                return (num / 1000).toFixed(1).replace(/\.0$/, '') + ' K';
+            }
+            return num.toString();
+        }
+
+        // Fonction de mise à jour globale
+        function updatePreview() {
+            nameOutput.textContent = nameInput.value || "Utilisateur";
+            handleOutput.textContent = handleInput.value || "@utilisateur";
+            likesOutput.textContent = formatLikes(parseInt(likesInput.value, 10));
+            commentOutput.textContent = commentInput.value || " ";
+        }
+        
+        // Écouteurs d'événements
+        ['input', 'change'].forEach(evt => {
+            nameInput.addEventListener(evt, updatePreview);
+            handleInput.addEventListener(evt, updatePreview);
+            likesInput.addEventListener(evt, updatePreview);
+            commentInput.addEventListener(evt, updatePreview);
+        });
+
+        pfpUrlInput.addEventListener('input', () => {
+            if (pfpUrlInput.value.trim() !== '') {
+                pfpOutput.src = pfpUrlInput.value;
+                pfpOutput.onerror = () => {
+                    pfpOutput.src = `https://placehold.co/40x40/71717a/ffffff?text=${(nameInput.value || 'U').charAt(0).toUpperCase()}`;
+                };
+            }
+        });
+
+        pfpFileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    pfpOutput.src = e.target.result;
+                    pfpUrlInput.value = ''; 
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Fonctionnalité d'export
+        exportButton.addEventListener('click', () => {
+            // Utilise la bibliothèque html2canvas pour capturer l'élément
+            html2canvas(previewArea, {
+                backgroundColor: '#0f0f0f', // Correspond au bg YouTube
+                useCORS: true // Permet de charger des images externes (URL)
+            }).then(canvas => {
+                // Crée un lien temporaire pour le téléchargement
+                const link = document.createElement('a');
+                link.download = 'commentaire-youtube.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click(); // Déclenche le téléchargement
+            });
+        });
+        
+        // Initialisation de l'aperçu au chargement
+        document.addEventListener('DOMContentLoaded', updatePreview);
+    </script>
+</body>
+</html>
